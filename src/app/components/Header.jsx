@@ -1,13 +1,6 @@
-import { Menu } from 'lucide-react';
+import { Menu } from "lucide-react";
 
-interface HeaderProps {
-  isAdmin: boolean;
-  onLogin: () => void;
-  onLogout: () => void;
-  onToggleSidebar: () => void;
-}
-
-export function Header({ isAdmin, onLogin, onLogout, onToggleSidebar }: HeaderProps) {
+export function Header({ isAdmin, onLogin, onLogout, onToggleSidebar }) {
   return (
     <header className="bg-[#1a1a1a] border-b border-gray-800 sticky top-0 z-40">
       <div className="flex items-center justify-between px-4 py-4">
@@ -28,7 +21,7 @@ export function Header({ isAdmin, onLogin, onLogout, onToggleSidebar }: HeaderPr
             </h1>
           </div>
         </div>
-        
+
         {isAdmin ? (
           <button
             onClick={onLogout}

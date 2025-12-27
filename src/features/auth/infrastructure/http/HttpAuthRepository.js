@@ -1,9 +1,9 @@
-import { UserRepository } from "../../domain/repository/UserRepository.js";
-import api from "../../../../shared/axios/axios.js";
+import { UserRepository } from "@/features/auth/domain/repository/UserRepository.js";
+import api from "@/shared/axios/axios.js";
 
 export class HttpAuthRepository extends UserRepository {
   async getTokenByIdPw(id, password) {
-    const response = await api.post("/auth/login", { id, password });
+    const response = await api.post("/api/auth/login", { id, password });
     return response.data;
   }
   async tokenRefresh(refreshToken) {

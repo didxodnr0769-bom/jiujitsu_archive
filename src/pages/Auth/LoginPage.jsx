@@ -1,13 +1,28 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../../shared/axios/axios'; // Custom axios instance
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const emailRef = useRef();
+  const passwordRef = useRef();
 
-  const handleLogin = () => {
-    // In a real app, you'd have actual authentication logic
-    alert('Logged in successfully!');
-    navigate('/');
+  const handleLogin = async () => {
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+
+    try {
+      // Use the custom axios instance
+      const response = await api.post('/api/login', { email, password });
+      if (response.data.success) {
+        alert('Logged in successfully!');
+        navigate('/');
+      } else {
+        alert('Login failed: ' + response.data.message);
+      }
+    } catch (error) {
+      alert('Login failed: ' + (error.response?.data?.message || error.message));
+    }
   };
 
   return (
@@ -27,6 +42,7 @@ export default function LoginPage() {
               placeholder="Email"
               className="w-full px-4 py-2 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
               defaultValue="admin@example.com"
+              ref={emailRef}
             />
           </div>
           <div className="mb-6">
@@ -35,6 +51,7 @@ export default function LoginPage() {
               placeholder="Password"
               className="w-full px-4 py-2 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
               defaultValue="password"
+              ref={passwordRef}
             />
           </div>
           <button

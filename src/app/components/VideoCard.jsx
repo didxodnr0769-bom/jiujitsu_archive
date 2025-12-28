@@ -2,13 +2,13 @@ import { Edit2, Trash2 } from "lucide-react";
 
 // Helper function to convert YouTube watch URL to embed URL
 const getYouTubeEmbedUrl = (url) => {
-  console.log(url);
   if (!url) return "";
   const regExp =
     /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
   const match = url.match(regExp);
   if (match && match[2] && match[2].length === 11) {
-    return `https://www.youtube.com/embed/${match[2]}?autoplay=0&controls=1`;
+    const videoUrl = `https://www.youtube.com/embed/${match[2]}?autoplay=0&controls=1`;
+    return videoUrl;
   }
   return "";
 };
@@ -19,7 +19,8 @@ export function VideoCard({ video, isAdmin, onPlay, onEdit, onDelete }) {
       {/* Embedded Video */}
       <div className="relative aspect-video bg-gray-900">
         <iframe
-          src={getYouTubeEmbedUrl(video.videoUrl)}
+          src={getYouTubeEmbedUrl(video.url)}
+          // src="https://www.youtube.com/embed/m7hrbYSsL68"
           title={video.title}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen

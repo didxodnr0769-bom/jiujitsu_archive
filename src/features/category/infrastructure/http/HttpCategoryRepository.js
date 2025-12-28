@@ -8,7 +8,6 @@ import api from "@/shared/axios/axios.js";
 export class HttpCategoryRepository extends CategoryRepository {
   async getCategoryList() {
     const response = await api.get("/api/category");
-    console.log(response);
     return response.data;
   }
 

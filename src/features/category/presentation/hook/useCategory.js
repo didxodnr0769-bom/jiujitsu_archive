@@ -10,7 +10,6 @@ const useCategory = () => {
     queryFn: () => getCategory(),
   });
 
-  console.log(data, isError);
   return { categoryList: data?.result?.categories || [], isPending, isError };
 };
 export default useCategory;

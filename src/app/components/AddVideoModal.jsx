@@ -6,7 +6,7 @@ export function AddVideoModal({
   isOpen,
   onClose,
   onSave,
-  categories,
+  categories = [],
   editVideo,
 }) {
   const [url, setUrl] = useState("");

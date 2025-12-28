@@ -3,6 +3,7 @@ import { Plus } from "lucide-react";
 import { VideoGrid } from "../../app/components/VideoGrid";
 import { AddVideoModal } from "../../app/components/AddVideoModal";
 import { VideoPlayerModal } from "../../app/components/VideoPlayerModal";
+import { useParams } from "react-router-dom";
 
 // Mock data for initial state
 const initialVideos = [
@@ -29,8 +30,9 @@ const initialVideos = [
   // ... more videos
 ];
 
-function MainPage({ isAdmin, categories, selectedCategory }) {
+function MainPage({ isAdmin, categories }) {
   const [videos, setVideos] = useState(initialVideos);
+  const { categoryId: selectedCategory } = useParams();
 
   // Modal states
   const [addVideoModalOpen, setAddVideoModalOpen] = useState(false);
@@ -39,6 +41,7 @@ function MainPage({ isAdmin, categories, selectedCategory }) {
 
   // When categories change (e.g., one is deleted), update videos
   useEffect(() => {
+    console.log(selectedCategory);
     // setVideos((currentVideos) =>
     //   currentVideos.map((v) =>
     //     categories.includes(v.category)
@@ -46,7 +49,7 @@ function MainPage({ isAdmin, categories, selectedCategory }) {
     //       : { ...v, category: "Uncategorized" }
     //   )
     // );
-  }, [categories]);
+  }, [selectedCategory]);
 
   // Filter videos by category
   const filteredVideos = selectedCategory

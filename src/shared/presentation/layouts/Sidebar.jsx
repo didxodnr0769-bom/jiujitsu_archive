@@ -2,18 +2,17 @@ import useAuthStore from "@/features/auth/infrastructure/store/useAuthStore";
 import useCategory from "@/features/category/presentation/hook/useCategory";
 import useLayoutStore from "@/shared/infrastructure/store/useLayoutStore";
 import { Plus, X } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
 
-export function Sidebar({
-  categories,
-  selectedCategory,
-  onSelectCategory,
-  onManageCategories,
-}) {
+export function Sidebar({ onManageCategories }) {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const isSidebarOpen = useLayoutStore((state) => state.isSidebarOpen);
   const closeSidebar = useLayoutStore((state) => state.closeSidebar);
 
-  const { categoryList, isPending } = useCategory();
+  const { categoryId: selectedCategory } = useParams();
+  const { categoryList } = useCategory();
+
+  const navigate = useNavigate();
   return (
     <>
       {/* Mobile overlay */}
@@ -47,24 +46,25 @@ export function Sidebar({
             Categories
           </h2>
           <div className="space-y-1">
-            <button
-              onClick={() => onSelectCategory(null)}
-              className={`
-                w-full text-left px-4 py-3 rounded-lg transition-colors
-                ${
-                  selectedCategory === null
-                    ? "bg-purple-600 text-white"
-                    : "text-gray-300 hover:bg-gray-800"
-                }
-              `}
+            {/* 전체 비디오 버튼 */}
+            <SideBarButton
+              key={"all-videos"}
+              onClick={() => {
+                navigate("/");
+              }}
+              isSelected={!selectedCategory}
             >
               All Videos
-            </button>
+            </SideBarButton>
+
+            {/* 카테고리 버튼 */}
             {categoryList.map(({ categoryId, name }) => (
               <SideBarButton
                 key={categoryId}
-                onClick={() => onSelectCategory(categoryId)}
-                isSelected={selectedCategory === categoryId}
+                onClick={() => {
+                  navigate(`/${categoryId}`);
+                }}
+                isSelected={selectedCategory === String(categoryId)}
               >
                 {name}
               </SideBarButton>
@@ -94,6 +94,7 @@ export function Sidebar({
 
 const SideBarButton = ({ isSelected, onClick, children }) => {
   const closeSidebar = useLayoutStore((state) => state.closeSidebar);
+
   return (
     <button
       onClick={() => {

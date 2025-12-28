@@ -3,9 +3,8 @@ import MainPage from "../../pages/Main/MainPage";
 
 const routes = [
   {
-    path: "/",
+    path: "/:categoryId?",
     component: MainPage,
-    exact: true,
   },
   {
     path: "/auth",

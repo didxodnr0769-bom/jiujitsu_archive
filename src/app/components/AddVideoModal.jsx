@@ -1,21 +1,19 @@
-import { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
-import { Video } from './VideoCard';
+import { useState, useEffect } from "react";
+import { X } from "lucide-react";
+import { VideoCard } from "./VideoCard";
 
-interface AddVideoModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: (video: Omit<Video, 'id' | 'thumbnailUrl'>) => void;
-  categories: string[];
-  editVideo?: Video | null;
-}
-
-export function AddVideoModal({ isOpen, onClose, onSave, categories, editVideo }: AddVideoModalProps) {
-  const [url, setUrl] = useState('');
-  const [type, setType] = useState<'shorts' | 'long'>('long');
-  const [note, setNote] = useState('');
-  const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('');
+export function AddVideoModal({
+  isOpen,
+  onClose,
+  onSave,
+  categories,
+  editVideo,
+}) {
+  const [url, setUrl] = useState("");
+  const [type, setType] = useState("long");
+  const [note, setNote] = useState("");
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
 
   useEffect(() => {
     if (editVideo) {
@@ -25,19 +23,19 @@ export function AddVideoModal({ isOpen, onClose, onSave, categories, editVideo }
       setTitle(editVideo.title);
       setCategory(editVideo.category);
     } else {
-      setUrl('');
-      setType('long');
-      setNote('');
-      setTitle('');
-      setCategory(categories[0] || '');
+      setUrl("");
+      setType("long");
+      setNote("");
+      setTitle("");
+      setCategory(categories[0] || "");
     }
   }, [editVideo, categories, isOpen]);
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (!url || !category) return;
 
     onSave({
@@ -49,11 +47,11 @@ export function AddVideoModal({ isOpen, onClose, onSave, categories, editVideo }
     });
 
     // Reset form
-    setUrl('');
-    setType('long');
-    setNote('');
-    setTitle('');
-    setCategory(categories[0] || '');
+    setUrl("");
+    setType("long");
+    setNote("");
+    setTitle("");
+    setCategory(categories[0] || "");
     onClose();
   };
 
@@ -63,7 +61,7 @@ export function AddVideoModal({ isOpen, onClose, onSave, categories, editVideo }
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-800">
           <h2 className="text-white text-xl font-semibold">
-            {editVideo ? 'Edit Video' : 'Add New Video'}
+            {editVideo ? "Edit Video" : "Add New Video"}
           </h2>
           <button
             onClick={onClose}
@@ -98,8 +96,8 @@ export function AddVideoModal({ isOpen, onClose, onSave, categories, editVideo }
                   type="radio"
                   name="type"
                   value="long"
-                  checked={type === 'long'}
-                  onChange={(e) => setType(e.target.value as 'shorts' | 'long')}
+                  checked={type === "long"}
+                  onChange={(e) => setType(e.target.value)}
                   className="w-4 h-4 text-purple-600"
                 />
                 <span className="text-white">Long-form</span>
@@ -109,8 +107,8 @@ export function AddVideoModal({ isOpen, onClose, onSave, categories, editVideo }
                   type="radio"
                   name="type"
                   value="shorts"
-                  checked={type === 'shorts'}
-                  onChange={(e) => setType(e.target.value as 'shorts' | 'long')}
+                  checked={type === "shorts"}
+                  onChange={(e) => setType(e.target.value)}
                   className="w-4 h-4 text-purple-600"
                 />
                 <span className="text-white">Shorts</span>
@@ -170,7 +168,7 @@ export function AddVideoModal({ isOpen, onClose, onSave, categories, editVideo }
             type="submit"
             className="w-full py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold"
           >
-            {editVideo ? 'Update Video' : 'Save Video'}
+            {editVideo ? "Update Video" : "Save Video"}
           </button>
         </form>
       </div>

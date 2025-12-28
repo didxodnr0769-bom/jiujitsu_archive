@@ -8,27 +8,27 @@ const AppRoute = () => {
     <Routes>
       {routes.map((route, index) => {
         const PageComponent = route.component;
-        
+
         // Routes that require the main layout
         const routesWithLayout = ["/"];
+        const hideLayout = ["/auth"];
 
-        if (routesWithLayout.includes(route.path)) {
+        if (hideLayout.includes(route.path)) {
           return (
-            <Route
-              key={index}
-              path={route.path}
-              element={
-                <MainLayout>
-                  <PageComponent />
-                </MainLayout>
-              }
-            />
+            <Route key={index} path={route.path} element={<PageComponent />} />
           );
         }
 
-        // Routes without the layout
         return (
-          <Route key={index} path={route.path} element={<PageComponent />} />
+          <Route
+            key={index}
+            path={route.path}
+            element={
+              <MainLayout>
+                <PageComponent />
+              </MainLayout>
+            }
+          />
         );
       })}
     </Routes>

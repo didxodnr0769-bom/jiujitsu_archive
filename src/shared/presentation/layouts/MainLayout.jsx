@@ -42,14 +42,6 @@ export function MainLayout({ children }) {
     }
   };
 
-  // Clone the children and pass the necessary props
-  const childrenWithProps = React.cloneElement(children, {
-    isAdmin,
-    categories,
-    selectedCategory,
-    // Pass any other props the child page might need
-  });
-
   return (
     <div className="min-h-screen bg-[#121212] flex flex-col lg:flex-row">
       <Sidebar
@@ -63,7 +55,7 @@ export function MainLayout({ children }) {
         <Header />
 
         {/* Render the page content */}
-        <main className="flex-1 p-6 lg:p-8">{childrenWithProps}</main>
+        <main className="flex-1 p-6 lg:p-8">{children}</main>
       </div>
 
       <CategoryModal

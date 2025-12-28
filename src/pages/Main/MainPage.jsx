@@ -39,11 +39,13 @@ function MainPage({ isAdmin, categories, selectedCategory }) {
 
   // When categories change (e.g., one is deleted), update videos
   useEffect(() => {
-    setVideos((currentVideos) =>
-      currentVideos.map((v) =>
-        categories.includes(v.category) ? v : { ...v, category: "Uncategorized" }
-      )
-    );
+    // setVideos((currentVideos) =>
+    //   currentVideos.map((v) =>
+    //     categories.includes(v.category)
+    //       ? v
+    //       : { ...v, category: "Uncategorized" }
+    //   )
+    // );
   }, [categories]);
 
   // Filter videos by category
@@ -126,7 +128,7 @@ function MainPage({ isAdmin, categories, selectedCategory }) {
       )}
 
       {/* Modals */}
-      <AddVideoModal
+      {/* <AddVideoModal
         isOpen={addVideoModalOpen}
         onClose={() => {
           setAddVideoModalOpen(false);
@@ -135,12 +137,12 @@ function MainPage({ isAdmin, categories, selectedCategory }) {
         onSave={editingVideo ? handleUpdateVideo : handleAddVideo}
         categories={categories}
         editVideo={editingVideo}
-      />
+      /> */}
 
-      <VideoPlayerModal
+      {/* <VideoPlayerModal
         video={selectedVideo}
         onClose={() => setSelectedVideo(null)}
-      />
+      /> */}
     </>
   );
 }

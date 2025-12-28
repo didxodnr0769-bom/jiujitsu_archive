@@ -1,23 +1,10 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Plus } from "lucide-react";
-import { Header } from "../../app/components/Header";
-import { Sidebar } from "../../app/components/Sidebar";
 import { VideoGrid } from "../../app/components/VideoGrid";
 import { AddVideoModal } from "../../app/components/AddVideoModal";
 import { VideoPlayerModal } from "../../app/components/VideoPlayerModal";
-import { CategoryModal } from "../../app/components/CategoryModal";
-import { useNavigate } from "react-router-dom";
 
 // Mock data for initial state
-const initialCategories = [
-  "Guard Pass",
-  "Takedown",
-  "Submission",
-  "Escape",
-  "Sweep",
-  "Position",
-];
-
 const initialVideos = [
   {
     id: "1",
@@ -39,97 +26,32 @@ const initialVideos = [
     thumbnailUrl:
       "https://images.unsplash.com/photo-1583473312262-d978f656f47e?w=800&h=450&fit=crop",
   },
-  {
-    id: "3",
-    url: "https://www.youtube.com/watch?v=example3",
-    title: "Double Leg Takedown Drilling",
-    type: "long",
-    note: "Step-by-step breakdown of the double leg takedown with common mistakes to avoid.",
-    category: "Takedown",
-    thumbnailUrl:
-      "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=800&h=450&fit=crop",
-  },
-  {
-    id: "4",
-    url: "https://www.youtube.com/watch?v=example4",
-    title: "Triangle Choke from Guard",
-    type: "long",
-    note: "Complete guide to setting up and finishing the triangle choke",
-    category: "Submission",
-    thumbnailUrl:
-      "https://images.unsplash.com/photo-1517438322307-e67111335449?w=800&h=450&fit=crop",
-  },
-  {
-    id: "5",
-    url: "https://www.youtube.com/shorts/def456",
-    title: "Hip Escape Drill",
-    type: "shorts",
-    note: "Quick tip for better hip mobility",
-    category: "Escape",
-    thumbnailUrl:
-      "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800&h=450&fit=crop",
-  },
-  {
-    id: "6",
-    url: "https://www.youtube.com/watch?v=example6",
-    title: "Mount Maintenance and Control",
-    type: "long",
-    note: "Learn how to maintain and control the mount position effectively",
-    category: "Position",
-    thumbnailUrl:
-      "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=800&h=450&fit=crop",
-  },
-  {
-    id: "7",
-    url: "https://www.youtube.com/watch?v=example7",
-    title: "Scissor Sweep from Closed Guard",
-    type: "long",
-    note: "High percentage sweep for all levels",
-    category: "Sweep",
-    thumbnailUrl:
-      "https://images.unsplash.com/photo-1577219492395-eef9ef6f77d8?w=800&h=450&fit=crop",
-  },
-  {
-    id: "8",
-    url: "https://www.youtube.com/shorts/ghi789",
-    title: "Standing Guard Break",
-    type: "shorts",
-    note: "Simple standing guard break technique",
-    category: "Guard Pass",
-    thumbnailUrl:
-      "https://images.unsplash.com/photo-1551027136-e4440a1ea86f?w=800&h=450&fit=crop",
-  },
+  // ... more videos
 ];
 
-function MainPage() {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [categories, setCategories] = useState(initialCategories);
+function MainPage({ isAdmin, categories, selectedCategory }) {
   const [videos, setVideos] = useState(initialVideos);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Modal states
   const [addVideoModalOpen, setAddVideoModalOpen] = useState(false);
-  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [editingVideo, setEditingVideo] = useState(null);
 
-  const navigate = useNavigate();
+  // When categories change (e.g., one is deleted), update videos
+  useEffect(() => {
+    setVideos((currentVideos) =>
+      currentVideos.map((v) =>
+        categories.includes(v.category) ? v : { ...v, category: "Uncategorized" }
+      )
+    );
+  }, [categories]);
 
   // Filter videos by category
   const filteredVideos = selectedCategory
     ? videos.filter((v) => v.category === selectedCategory)
     : videos;
 
-  // Handlers
-  const handleLogin = () => {
-    navigate("/auth");
-  };
-
-  const handleLogout = () => {
-    setIsAdmin(false);
-  };
-
+  // Video-specific handlers
   const handleAddVideo = (videoData) => {
     const newVideo = {
       ...videoData,
@@ -163,75 +85,30 @@ function MainPage() {
     }
   };
 
-  const handleAddCategory = (name) => {
-    if (!categories.includes(name)) {
-      setCategories([...categories, name]);
-    }
-  };
-
-  const handleDeleteCategory = (name) => {
-    if (
-      confirm(
-        `Delete category "${name}"? Videos in this category will remain but be uncategorized.`
-      )
-    ) {
-      setCategories(categories.filter((c) => c !== name));
-      // Optionally update videos in this category
-      setVideos(
-        videos.map((v) =>
-          v.category === name ? { ...v, category: "Uncategorized" } : v
-        )
-      );
-    }
-  };
-
   const handlePlayVideo = (video) => {
     setSelectedVideo(video);
   };
 
   return (
-    <div className="min-h-screen bg-[#121212] flex flex-col lg:flex-row">
-      {/* Sidebar */}
-      <Sidebar
-        categories={categories}
-        selectedCategory={selectedCategory}
-        onSelectCategory={setSelectedCategory}
-        isAdmin={isAdmin}
-        onManageCategories={() => setCategoryModalOpen(true)}
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-      />
+    <>
+      <div className="max-w-[1800px] mx-auto">
+        <div className="mb-6">
+          <h2 className="text-white text-2xl font-semibold">
+            {selectedCategory || "All Videos"}
+          </h2>
+          <p className="text-gray-400 mt-1">
+            {filteredVideos.length}{" "}
+            {filteredVideos.length === 1 ? "video" : "videos"}
+          </p>
+        </div>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col min-h-screen">
-        <Header
+        <VideoGrid
+          videos={filteredVideos}
           isAdmin={isAdmin}
-          onLogin={handleLogin}
-          onLogout={handleLogout}
-          onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+          onPlay={handlePlayVideo}
+          onEdit={handleEditVideo}
+          onDelete={handleDeleteVideo}
         />
-
-        <main className="flex-1 p-6 lg:p-8">
-          <div className="max-w-[1800px] mx-auto">
-            <div className="mb-6">
-              <h2 className="text-white text-2xl font-semibold">
-                {selectedCategory || "All Videos"}
-              </h2>
-              <p className="text-gray-400 mt-1">
-                {filteredVideos.length}{" "}
-                {filteredVideos.length === 1 ? "video" : "videos"}
-              </p>
-            </div>
-
-            <VideoGrid
-              videos={filteredVideos}
-              isAdmin={isAdmin}
-              onPlay={handlePlayVideo}
-              onEdit={handleEditVideo}
-              onDelete={handleDeleteVideo}
-            />
-          </div>
-        </main>
       </div>
 
       {/* Floating Action Button (Admin Only) */}
@@ -260,19 +137,11 @@ function MainPage() {
         editVideo={editingVideo}
       />
 
-      <CategoryModal
-        isOpen={categoryModalOpen}
-        onClose={() => setCategoryModalOpen(false)}
-        categories={categories}
-        onAddCategory={handleAddCategory}
-        onDeleteCategory={handleDeleteCategory}
-      />
-
       <VideoPlayerModal
         video={selectedVideo}
         onClose={() => setSelectedVideo(null)}
       />
-    </div>
+    </>
   );
 }
 

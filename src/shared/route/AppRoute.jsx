@@ -1,13 +1,36 @@
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
-import routes from './routes';
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import routes from "./routes";
+import { MainLayout } from "../presentation/layouts/MainLayout";
 
 const AppRoute = () => {
   return (
     <Routes>
-      {routes.map((route, index) => (
-        <Route key={index} path={route.path} element={<route.component />} />
-      ))}
+      {routes.map((route, index) => {
+        const PageComponent = route.component;
+        
+        // Routes that require the main layout
+        const routesWithLayout = ["/"];
+
+        if (routesWithLayout.includes(route.path)) {
+          return (
+            <Route
+              key={index}
+              path={route.path}
+              element={
+                <MainLayout>
+                  <PageComponent />
+                </MainLayout>
+              }
+            />
+          );
+        }
+
+        // Routes without the layout
+        return (
+          <Route key={index} path={route.path} element={<PageComponent />} />
+        );
+      })}
     </Routes>
   );
 };

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 const DEFAULT_STATE = {
-  sidebarOpen: false,
+  isSidebarOpen: false,
 };
 
 const useLayoutStore = create((set) => ({
@@ -10,7 +10,11 @@ const useLayoutStore = create((set) => ({
   // 2. 액션 (Actions): 상태를 변경하는 함수
   toggleSidebar: () =>
     set((state) => ({
-      sidebarOpen: !state.sidebarOpen,
+      isSidebarOpen: !state.isSidebarOpen,
+    })),
+  closeSidebar: () =>
+    set(() => ({
+      isSidebarOpen: false,
     })),
 }));
 

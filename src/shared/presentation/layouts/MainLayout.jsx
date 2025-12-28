@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Sidebar } from "../../../app/components/Sidebar";
 import { Header } from "./Header";
 import { CategoryModal } from "../../../app/components/CategoryModal";
+import { Sidebar } from "./Sidebar";
 
 // Mock data - In a real app, this would come from an API
 const initialCategories = [
@@ -23,18 +23,6 @@ export function MainLayout({ children }) {
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
   const navigate = useNavigate();
-
-  // Handlers lifted from MainPage
-  const handleLogin = () => {
-    // For now, just toggle the admin state for demonstration
-    setIsAdmin(true);
-    // In a real app, you'd navigate to the login page:
-    // navigate("/auth");
-  };
-
-  const handleLogout = () => {
-    setIsAdmin(false);
-  };
 
   const handleAddCategory = (name) => {
     if (!categories.includes(name)) {
@@ -68,19 +56,11 @@ export function MainLayout({ children }) {
         categories={categories}
         selectedCategory={selectedCategory}
         onSelectCategory={setSelectedCategory}
-        isAdmin={isAdmin}
         onManageCategories={() => setCategoryModalOpen(true)}
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
       />
 
       <div className="flex-1 flex flex-col min-h-screen">
-        <Header
-          isAdmin={isAdmin}
-          onLogin={handleLogin}
-          onLogout={handleLogout}
-          onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
-        />
+        <Header />
 
         {/* Render the page content */}
         <main className="flex-1 p-6 lg:p-8">{childrenWithProps}</main>

@@ -10,7 +10,8 @@
 // export const updateUserProfileUseCase =
 //   createUpdateUserProfileUseCase(userRepository);
 
+import { HttpCategoryRepository } from "@/features/category/infrastructure/http/HttpCategoryRepository";
 import { HttpAuthRepository } from "../features/auth/infrastructure/http/HttpAuthRepository";
-// auth repo
 
 export const authRepository = new HttpAuthRepository();
+export const categoryRepository = new HttpCategoryRepository();

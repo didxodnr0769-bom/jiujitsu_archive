@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
-import { VideoCard } from "./VideoCard";
+import useCategory from "@/features/category/presentation/hook/useCategory";
+import useAddVideo from "../hook/useAddVideo";
+import useUpdateVideo from "../hook/useUpdateVideo";
 
-export function AddVideoModal({
-  isOpen,
-  onClose,
-  onSave,
-  categories = [],
-  editVideo,
-}) {
+export function AddVideoModal({ isOpen, onClose, editVideo }) {
   const [url, setUrl] = useState("");
   const [type, setType] = useState("long");
   const [note, setNote] = useState("");
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
+
+  const { categoryList, isPending, isError } = useCategory();
+  const { mutate: addVideo } = useAddVideo();
+  const { mutate: updateVideo } = useUpdateVideo();
 
   useEffect(() => {
     if (editVideo) {
@@ -27,9 +27,9 @@ export function AddVideoModal({
       setType("long");
       setNote("");
       setTitle("");
-      setCategory(categories[0] || "");
+      setCategory(categoryList[0] || "");
     }
-  }, [editVideo, categories, isOpen]);
+  }, [editVideo, categoryList, isOpen]);
 
   if (!isOpen) return null;
 
@@ -38,20 +38,26 @@ export function AddVideoModal({
 
     if (!url || !category) return;
 
-    onSave({
+    const videoData = {
       url,
       type,
       note,
       title: title || note,
-      category,
-    });
+      categoryId: category,
+    };
+
+    if (editVideo) {
+      updateVideo({ videoId: editVideo.id, videoData });
+    } else {
+      addVideo(videoData);
+    }
 
     // Reset form
     setUrl("");
     setType("long");
     setNote("");
     setTitle("");
-    setCategory(categories[0] || "");
+    setCategory(categoryList[0] || "");
     onClose();
   };
 
@@ -123,14 +129,14 @@ export function AddVideoModal({
             <select
               id="category"
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => setCategory(parseInt(e.target.value))}
               className="w-full px-4 py-3 bg-gray-900 text-white rounded-lg border border-gray-800 focus:border-purple-600 focus:outline-none"
               required
             >
               <option value="">Select a category</option>
-              {categories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
+              {categoryList.map((cat) => (
+                <option key={cat.categoryId} value={cat.categoryId}>
+                  {cat.name}
                 </option>
               ))}
             </select>

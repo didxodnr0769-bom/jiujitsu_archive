@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Plus } from "lucide-react";
 import { VideoGrid } from "../../app/components/VideoGrid";
-import { AddVideoModal } from "../../app/components/AddVideoModal";
 import { VideoPlayerModal } from "../../app/components/VideoPlayerModal";
 import { useParams } from "react-router-dom";
 import useVideo from "@/features/video/presentation/hook/useVideo";
 import useAuthStore from "@/features/auth/infrastructure/store/useAuthStore";
+import { AddVideoModal } from "@/features/video/presentation/components/AddVideoModal";
+import useDeleteVideo from "@/features/video/presentation/hook/useDeleteVideo";
 
 function MainPage({ isAdmin, categories }) {
   const { categoryId: selectedCategory } = useParams();
@@ -13,6 +14,7 @@ function MainPage({ isAdmin, categories }) {
   const isAuthenticated = useAuthStore(
     (statusbar) => statusbar.isAuthenticated
   );
+  const { mutate: deleteVideo } = useDeleteVideo();
 
   // Modal states
   const [addVideoModalOpen, setAddVideoModalOpen] = useState(false);
@@ -20,33 +22,14 @@ function MainPage({ isAdmin, categories }) {
   const [editingVideo, setEditingVideo] = useState(null);
 
   // Video-specific handlers
-  const handleAddVideo = (videoData) => {
-    const newVideo = {
-      ...videoData,
-      id: Date.now().toString(),
-    };
-    // setVideos([newVideo, ...videos]);
-  };
-
   const handleEditVideo = (video) => {
     setEditingVideo(video);
     setAddVideoModalOpen(true);
   };
 
-  const handleUpdateVideo = (videoData) => {
-    if (editingVideo) {
-      setVideos(
-        videos.map((v) =>
-          v.id === editingVideo.id ? { ...v, ...videoData } : v
-        )
-      );
-      setEditingVideo(null);
-    }
-  };
-
   const handleDeleteVideo = (videoId) => {
-    if (confirm("Are you sure you want to delete this video?")) {
-      setVideos(videos.filter((v) => v.id !== videoId));
+    if (confirm("삭제?")) {
+      deleteVideo(videoId);
     }
   };
 
@@ -68,7 +51,7 @@ function MainPage({ isAdmin, categories }) {
 
         <VideoGrid
           videos={videoList}
-          isAdmin={isAdmin}
+          isAdmin={isAuthenticated}
           onPlay={handlePlayVideo}
           onEdit={handleEditVideo}
           onDelete={handleDeleteVideo}
@@ -96,7 +79,6 @@ function MainPage({ isAdmin, categories }) {
           setAddVideoModalOpen(false);
           setEditingVideo(null);
         }}
-        onSave={editingVideo ? handleUpdateVideo : handleAddVideo}
         categories={categories}
         editVideo={editingVideo}
       />

@@ -33,7 +33,7 @@ export default function LoginForm() {
       <div className="mb-4">
         <input
           type="text"
-          placeholder="ID"
+          placeholder="아이디"
           className="w-full px-4 py-2 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
           defaultValue="user"
           ref={idRef}
@@ -42,7 +42,7 @@ export default function LoginForm() {
       <div className="mb-6">
         <input
           type="password"
-          placeholder="Password"
+          placeholder="비밀번호"
           className="w-full px-4 py-2 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
           defaultValue="pass"
           ref={passwordRef}
@@ -52,7 +52,7 @@ export default function LoginForm() {
         type="submit"
         className="w-full px-4 py-2 bg-purple-600 rounded-md hover:bg-purple-700 transition-colors"
       >
-        Login
+        로그인
       </button>
       {errorMessage && <p className="mt-4 text-red-500">{errorMessage}</p>}
     </form>

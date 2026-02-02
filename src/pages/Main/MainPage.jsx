@@ -28,7 +28,7 @@ function MainPage({ isAdmin, categories }) {
   };
 
   const handleDeleteVideo = (videoId) => {
-    if (confirm("삭제?")) {
+    if (confirm("정말 삭제하시겠습니까?")) {
       deleteVideo(videoId);
     }
   };
@@ -42,10 +42,10 @@ function MainPage({ isAdmin, categories }) {
       <div className="max-w-[1800px] mx-auto">
         <div className="mb-6">
           <h2 className="text-white text-2xl font-semibold">
-            {selectedCategory || "All Videos"}
+            {selectedCategory || "전체 비디오"}
           </h2>
           <p className="text-gray-400 mt-1">
-            {videoList.length} {videoList.length === 1 ? "video" : "videos"}
+            {videoList.length} {videoList.length === 1 ? "개의 비디오" : "개의 비디오"}
           </p>
         </div>
 
@@ -66,7 +66,7 @@ function MainPage({ isAdmin, categories }) {
             setAddVideoModalOpen(true);
           }}
           className="fixed bottom-6 right-6 w-16 h-16 bg-purple-600 text-white rounded-full shadow-lg hover:bg-purple-700 transition-all hover:scale-110 flex items-center justify-center z-30"
-          aria-label="Add video"
+          aria-label="비디오 추가"
         >
           <Plus className="w-8 h-8" />
         </button>

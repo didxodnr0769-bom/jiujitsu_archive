@@ -40,7 +40,7 @@ export function VideoCard({ video, isAdmin, onPlay, onEdit, onDelete }) {
               }
             `}
           >
-            {video.type === "shorts" ? "Shorts" : "Long-form"}
+            {video.type === "shorts" ? "쇼츠" : "일반 영상"}
           </span>
         </div>
 
@@ -53,7 +53,7 @@ export function VideoCard({ video, isAdmin, onPlay, onEdit, onDelete }) {
                 onEdit(video);
               }}
               className="p-2 bg-gray-900/90 text-white rounded-lg hover:bg-purple-600 transition-colors"
-              aria-label="Edit video"
+              aria-label="비디오 수정"
             >
               <Edit2 className="w-4 h-4" />
             </button>
@@ -63,7 +63,7 @@ export function VideoCard({ video, isAdmin, onPlay, onEdit, onDelete }) {
                 onDelete(video.id);
               }}
               className="p-2 bg-gray-900/90 text-white rounded-lg hover:bg-red-600 transition-colors"
-              aria-label="Delete video"
+              aria-label="비디오 삭제"
             >
               <Trash2 className="w-4 h-4" />
             </button>
@@ -74,7 +74,7 @@ export function VideoCard({ video, isAdmin, onPlay, onEdit, onDelete }) {
       {/* Content */}
       <div className="p-4">
         <h3 className="text-white font-semibold mb-1 line-clamp-2">
-          {video.title || "Untitled Video"}
+          {video.title || "제목 없음"}
         </h3>
         <p className="text-gray-400 text-sm line-clamp-2">{video.note}</p>
         <div className="mt-2">

@@ -67,7 +67,7 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-800">
           <h2 className="text-white text-xl font-semibold">
-            {editVideo ? "Edit Video" : "Add New Video"}
+            {editVideo ? "비디오 수정" : "새 비디오 추가"}
           </h2>
           <button
             onClick={onClose}
@@ -81,7 +81,7 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
             <label htmlFor="video-url" className="block text-gray-300 mb-2">
-              YouTube URL
+              유튜브 URL
             </label>
             <input
               id="video-url"
@@ -95,7 +95,7 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
           </div>
 
           <div>
-            <label className="block text-gray-300 mb-2">Video Type</label>
+            <label className="block text-gray-300 mb-2">비디오 유형</label>
             <div className="flex gap-4">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -106,7 +106,7 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
                   onChange={(e) => setType(e.target.value)}
                   className="w-4 h-4 text-purple-600"
                 />
-                <span className="text-white">Long-form</span>
+                <span className="text-white">일반 영상</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -117,14 +117,14 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
                   onChange={(e) => setType(e.target.value)}
                   className="w-4 h-4 text-purple-600"
                 />
-                <span className="text-white">Shorts</span>
+                <span className="text-white">쇼츠</span>
               </label>
             </div>
           </div>
 
           <div>
             <label htmlFor="category" className="block text-gray-300 mb-2">
-              Category
+              카테고리
             </label>
             <select
               id="category"
@@ -133,7 +133,7 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
               className="w-full px-4 py-3 bg-gray-900 text-white rounded-lg border border-gray-800 focus:border-purple-600 focus:outline-none"
               required
             >
-              <option value="">Select a category</option>
+              <option value="">카테고리 선택</option>
               {categoryList.map((cat) => (
                 <option key={cat.categoryId} value={cat.categoryId}>
                   {cat.name}
@@ -144,27 +144,27 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
 
           <div>
             <label htmlFor="title" className="block text-gray-300 mb-2">
-              Title
+              제목
             </label>
             <input
               id="title"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Video title"
+              placeholder="비디오 제목"
               className="w-full px-4 py-3 bg-gray-900 text-white rounded-lg border border-gray-800 focus:border-purple-600 focus:outline-none"
             />
           </div>
 
           <div>
             <label htmlFor="note" className="block text-gray-300 mb-2">
-              Note
+              메모
             </label>
             <textarea
               id="note"
               value={note}
               onChange={(e) => setNote(e.target.value)}
-              placeholder="Add a note or description..."
+              placeholder="메모나 설명을 추가하세요..."
               rows={3}
               className="w-full px-4 py-3 bg-gray-900 text-white rounded-lg border border-gray-800 focus:border-purple-600 focus:outline-none resize-none"
             />
@@ -174,7 +174,7 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
             type="submit"
             className="w-full py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold"
           >
-            {editVideo ? "Update Video" : "Save Video"}
+            {editVideo ? "비디오 수정" : "비디오 저장"}
           </button>
         </form>
       </div>

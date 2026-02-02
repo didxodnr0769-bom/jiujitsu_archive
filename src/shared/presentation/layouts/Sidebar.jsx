@@ -32,7 +32,7 @@ export function Sidebar({ onManageCategories }) {
         `}
       >
         <div className="p-4 border-b border-gray-800 lg:hidden flex justify-between items-center">
-          <h2 className="text-white font-semibold">Categories</h2>
+          <h2 className="text-white font-semibold">카테고리</h2>
           <button
             onClick={closeSidebar}
             className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
@@ -43,7 +43,7 @@ export function Sidebar({ onManageCategories }) {
 
         <div className="flex-1 overflow-y-auto p-4">
           <h2 className="text-gray-400 uppercase text-sm font-semibold mb-4 hidden lg:block">
-            Categories
+            카테고리
           </h2>
           <div className="space-y-1">
             {/* 전체 비디오 버튼 */}
@@ -54,7 +54,7 @@ export function Sidebar({ onManageCategories }) {
               }}
               isSelected={!selectedCategory}
             >
-              All Videos
+              전체 비디오
             </SideBarButton>
 
             {/* 카테고리 버튼 */}
@@ -83,7 +83,7 @@ export function Sidebar({ onManageCategories }) {
               className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
             >
               <Plus className="w-5 h-5" />
-              Manage Categories
+              카테고리 관리
             </button>
           </div>
         )}

@@ -4,9 +4,9 @@ export default function LoginPage() {
   return (
     <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
       <div className="p-8 bg-gray-800 rounded-lg shadow-lg text-center">
-        <h1 className="text-2xl font-bold mb-4">Admin Login</h1>
+        <h1 className="text-2xl font-bold mb-4">관리자 로그인</h1>
         <p className="mb-6">
-          Enter your credentials to access the admin dashboard.
+          관리자 대시보드에 접근하려면 로그인 정보를 입력하세요.
         </p>
         <LoginForm />
       </div>

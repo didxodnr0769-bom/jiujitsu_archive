@@ -24,7 +24,7 @@ export function Header() {
           <button
             onClick={toggleSidebar}
             className="lg:hidden p-2 hover:bg-gray-800 rounded-lg transition-colors"
-            aria-label="Toggle menu"
+            aria-label="메뉴 토글"
           >
             <Menu className="w-6 h-6 text-white" />
           </button>
@@ -33,7 +33,7 @@ export function Header() {
               <span className="text-white font-bold text-xl">BJJ</span>
             </div>
             <h1 className="text-white font-bold text-xl hidden sm:block">
-              Jiu-Jitsu Video Archive
+              주짓수 비디오 아카이브
             </h1>
           </div>
         </div>
@@ -43,14 +43,14 @@ export function Header() {
             onClick={handleLogout}
             className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
           >
-            Logout
+            로그아웃
           </button>
         ) : (
           <button
             onClick={handleLogin}
             className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
           >
-            Admin Login
+            관리자 로그인
           </button>
         )}
       </div>

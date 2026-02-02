@@ -33,7 +33,7 @@ export function CategoryModal({
       <div className="bg-[#1a1a1a] rounded-lg w-full max-w-md border border-gray-800">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-800">
-          <h2 className="text-white text-xl font-semibold">Manage Categories</h2>
+          <h2 className="text-white text-xl font-semibold">카테고리 관리</h2>
           <button
             onClick={onClose}
             className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
@@ -47,7 +47,7 @@ export function CategoryModal({
           {/* Add Category Form */}
           <form onSubmit={handleSubmit} className="mb-6">
             <label htmlFor="new-category" className="block text-gray-300 mb-2">
-              Add New Category
+              새 카테고리 추가
             </label>
             <div className="flex gap-2">
               <input
@@ -55,7 +55,7 @@ export function CategoryModal({
                 type="text"
                 value={newCategory}
                 onChange={(e) => setNewCategory(e.target.value)}
-                placeholder="Category name"
+                placeholder="카테고리 이름"
                 className="flex-1 px-4 py-3 bg-gray-900 text-white rounded-lg border border-gray-800 focus:border-purple-600 focus:outline-none"
               />
               <button
@@ -69,9 +69,9 @@ export function CategoryModal({
 
           {/* Categories List */}
           <div>
-            <h3 className="text-gray-300 mb-3">Existing Categories</h3>
+            <h3 className="text-gray-300 mb-3">기존 카테고리</h3>
             {categories.length === 0 ? (
-              <p className="text-gray-500 text-center py-4">No categories yet</p>
+              <p className="text-gray-500 text-center py-4">등록된 카테고리가 없습니다</p>
             ) : (
               <div className="space-y-2">
                 {categories.map((category) => (
@@ -83,7 +83,7 @@ export function CategoryModal({
                     <button
                       onClick={() => onDeleteCategory(category)}
                       className="p-2 text-gray-400 hover:text-red-500 hover:bg-gray-800 rounded-lg transition-colors"
-                      aria-label={`Delete ${category}`}
+                      aria-label={`${category} 삭제`}
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>

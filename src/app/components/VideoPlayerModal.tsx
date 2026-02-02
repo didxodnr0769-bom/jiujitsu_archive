@@ -59,7 +59,7 @@ export function VideoPlayerModal({ video, onClose }: VideoPlayerModalProps) {
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-white">
-              <p>Invalid video URL</p>
+              <p>유효하지 않은 비디오 URL</p>
             </div>
           )}
         </div>
@@ -75,7 +75,7 @@ export function VideoPlayerModal({ video, onClose }: VideoPlayerModalProps) {
                 ${video.type === 'shorts' ? 'bg-red-600' : 'bg-blue-600'}
               `}
             >
-              {video.type === 'shorts' ? 'Shorts' : 'Long-form'}
+              {video.type === 'shorts' ? '쇼츠' : '일반 영상'}
             </span>
             <span className="text-purple-400 text-sm">{video.category}</span>
           </div>

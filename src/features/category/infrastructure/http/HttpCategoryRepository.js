@@ -12,19 +12,17 @@ export class HttpCategoryRepository extends CategoryRepository {
   }
 
   async addCategory(categoryData) {
-    const response = await this.httpClient.post("/categories", categoryData);
+    const response = await api.post("/api/category", categoryData);
     return response.data;
   }
 
   async updateCategory(categoryId, categoryData) {
-    const response = await this.httpClient.put(
-      `/categories/${categoryId}`,
-      categoryData
-    );
+    const response = await api.put(`/api/category/${categoryId}`, categoryData);
     return response.data;
   }
 
   async deleteCategory(categoryId) {
-    await this.httpClient.delete(`/categories/${categoryId}`);
+    const response = await api.delete(`/api/category/${categoryId}`);
+    return response.data;
   }
 }

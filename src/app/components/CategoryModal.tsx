@@ -1,12 +1,17 @@
 import { useState } from 'react';
 import { X, Plus, Trash2 } from 'lucide-react';
 
+interface Category {
+  categoryId: number;
+  name: string;
+}
+
 interface CategoryModalProps {
   isOpen: boolean;
   onClose: () => void;
-  categories: string[];
+  categories: Category[];
   onAddCategory: (name: string) => void;
-  onDeleteCategory: (name: string) => void;
+  onDeleteCategory: (categoryId: number) => void;
 }
 
 export function CategoryModal({
@@ -76,14 +81,14 @@ export function CategoryModal({
               <div className="space-y-2">
                 {categories.map((category) => (
                   <div
-                    key={category}
+                    key={category.categoryId}
                     className="flex items-center justify-between p-3 bg-gray-900 rounded-lg border border-gray-800"
                   >
-                    <span className="text-white">{category}</span>
+                    <span className="text-white">{category.name}</span>
                     <button
-                      onClick={() => onDeleteCategory(category)}
+                      onClick={() => onDeleteCategory(category.categoryId)}
                       className="p-2 text-gray-400 hover:text-red-500 hover:bg-gray-800 rounded-lg transition-colors"
-                      aria-label={`${category} 삭제`}
+                      aria-label={`${category.name} 삭제`}
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>

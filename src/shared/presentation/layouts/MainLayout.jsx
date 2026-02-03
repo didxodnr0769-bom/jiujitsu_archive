@@ -1,53 +1,31 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Header } from "./Header";
 import { CategoryModal } from "../../../app/components/CategoryModal";
 import { Sidebar } from "./Sidebar";
-
-// Mock data - In a real app, this would come from an API
-const initialCategories = [
-  "Guard Pass",
-  "Takedown",
-  "Submission",
-  "Escape",
-  "Sweep",
-  "Position",
-];
+import useCategory from "@/features/category/presentation/hook/useCategory";
+import useAddCategory from "@/features/category/presentation/hook/useAddCategory";
+import useDeleteCategory from "@/features/category/presentation/hook/useDeleteCategory";
 
 export function MainLayout({ children }) {
-  // State lifted from MainPage
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [categories, setCategories] = useState(initialCategories);
-  const [selectedCategory, setSelectedCategory] = useState(null);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
-  const navigate = useNavigate();
+  const { categoryList } = useCategory();
+  const { mutate: addCategory } = useAddCategory();
+  const { mutate: deleteCategory } = useDeleteCategory();
 
   const handleAddCategory = (name) => {
-    if (!categories.includes(name)) {
-      setCategories([...categories, name]);
-    }
+    addCategory({ name });
   };
 
-  const handleDeleteCategory = (name) => {
-    if (
-      confirm(
-        `Delete category "${name}"? Videos in this category will remain but be uncategorized.`
-      )
-    ) {
-      setCategories(categories.filter((c) => c !== name));
-      // Note: The logic to update videos is now in MainPage,
-      // which will need to be handled via props or a global state manager.
+  const handleDeleteCategory = (categoryId) => {
+    if (confirm("카테고리를 삭제하시겠습니까? 해당 카테고리의 비디오는 분류되지 않은 상태로 남습니다.")) {
+      deleteCategory(categoryId);
     }
   };
 
   return (
     <div className="min-h-screen bg-[#121212] flex flex-col lg:flex-row">
       <Sidebar
-        categories={categories}
-        selectedCategory={selectedCategory}
-        onSelectCategory={setSelectedCategory}
         onManageCategories={() => setCategoryModalOpen(true)}
       />
 
@@ -61,7 +39,7 @@ export function MainLayout({ children }) {
       <CategoryModal
         isOpen={categoryModalOpen}
         onClose={() => setCategoryModalOpen(false)}
-        categories={categories}
+        categories={categoryList}
         onAddCategory={handleAddCategory}
         onDeleteCategory={handleDeleteCategory}
       />

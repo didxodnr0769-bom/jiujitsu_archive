@@ -31,6 +31,12 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
     }
   }, [editVideo, categoryList, isOpen]);
 
+  useEffect(() => {
+    if (url.includes("youtube.com/shorts/")) {
+      setType("shorts");
+    }
+  }, [url]);
+
   if (!isOpen) return null;
 
   const handleSubmit = (e) => {

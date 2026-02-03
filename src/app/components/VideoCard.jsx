@@ -4,7 +4,7 @@ import { Edit2, Trash2 } from "lucide-react";
 const getYouTubeEmbedUrl = (url) => {
   if (!url) return "";
   const regExp =
-    /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
   const match = url.match(regExp);
   if (match && match[2] && match[2].length === 11) {
     const videoUrl = `https://www.youtube.com/embed/${match[2]}?autoplay=0&controls=1`;
@@ -43,32 +43,6 @@ export function VideoCard({ video, isAdmin, onPlay, onEdit, onDelete }) {
             {video.type === "shorts" ? "쇼츠" : "일반 영상"}
           </span>
         </div>
-
-        {/* Admin Controls */}
-        {isAdmin && (
-          <div className="absolute bottom-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onEdit(video);
-              }}
-              className="p-2 bg-gray-900/90 text-white rounded-lg hover:bg-purple-600 transition-colors"
-              aria-label="비디오 수정"
-            >
-              <Edit2 className="w-4 h-4" />
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onDelete(video.id);
-              }}
-              className="p-2 bg-gray-900/90 text-white rounded-lg hover:bg-red-600 transition-colors"
-              aria-label="비디오 삭제"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
-          </div>
-        )}
       </div>
 
       {/* Content */}
@@ -77,8 +51,34 @@ export function VideoCard({ video, isAdmin, onPlay, onEdit, onDelete }) {
           {video.title || "제목 없음"}
         </h3>
         <p className="text-gray-400 text-sm line-clamp-2">{video.note}</p>
-        <div className="mt-2">
+        <div className="mt-2 flex justify-between items-center">
           <span className="text-purple-400 text-xs">{video.category}</span>
+
+          {/* Admin Controls */}
+          {isAdmin && (
+            <div className="flex gap-2">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(video);
+                }}
+                className="p-1.5 text-gray-400 hover:text-purple-400 hover:bg-gray-800 rounded-lg transition-colors"
+                aria-label="비디오 수정"
+              >
+                <Edit2 className="w-4 h-4" />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete(video.id);
+                }}
+                className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-gray-800 rounded-lg transition-colors"
+                aria-label="비디오 삭제"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

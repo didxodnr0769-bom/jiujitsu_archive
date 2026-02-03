@@ -10,9 +10,10 @@ import useDeleteVideo from "@/features/video/presentation/hook/useDeleteVideo";
 
 function MainPage({ isAdmin, categories }) {
   const { categoryId: selectedCategory } = useParams();
-  const { videoList, isPending, isError } = useVideo(selectedCategory);
+  const { videoList, categoryName, isPending, isError } =
+    useVideo(selectedCategory);
   const isAuthenticated = useAuthStore(
-    (statusbar) => statusbar.isAuthenticated
+    (statusbar) => statusbar.isAuthenticated,
   );
   const { mutate: deleteVideo } = useDeleteVideo();
 
@@ -37,15 +38,23 @@ function MainPage({ isAdmin, categories }) {
     setSelectedVideo(video);
   };
 
+  if (isPending) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh]">
+        <div className="w-12 h-12 border-4 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
+        <p className="mt-4 text-gray-400">비디오를 불러오는 중...</p>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="max-w-[1800px] mx-auto">
         <div className="mb-6">
-          <h2 className="text-white text-2xl font-semibold">
-            {selectedCategory || "전체 비디오"}
-          </h2>
+          <h2 className="text-white text-2xl font-semibold">{categoryName}</h2>
           <p className="text-gray-400 mt-1">
-            {videoList.length} {videoList.length === 1 ? "개의 비디오" : "개의 비디오"}
+            {videoList.length}{" "}
+            {videoList.length === 1 ? "개의 비디오" : "개의 비디오"}
           </p>
         </div>
 

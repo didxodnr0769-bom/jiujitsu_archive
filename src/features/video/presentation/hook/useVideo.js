@@ -12,7 +12,12 @@ const useVideo = (categoryId) => {
     queryFn: async () => videoFn(category),
   });
 
-  return { videoList: data?.videos || [], isPending, isError };
+  return {
+    videoList: data?.videos || [],
+    categoryName: data?.categoryName || "전체 비디오",
+    isPending,
+    isError,
+  };
 };
 
 export default useVideo;

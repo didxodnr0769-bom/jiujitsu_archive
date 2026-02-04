@@ -6,7 +6,7 @@ export default function LoginForm() {
   const navigate = useNavigate();
   const idRef = useRef();
   const passwordRef = useRef();
-  const { mutate } = useLogin();
+  const { mutate, isPending } = useLogin();
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async () => {
@@ -19,7 +19,7 @@ export default function LoginForm() {
         onError: (errorMessage) => {
           setErrorMessage(errorMessage);
         },
-      }
+      },
     );
   };
 
@@ -35,8 +35,8 @@ export default function LoginForm() {
           type="text"
           placeholder="아이디"
           className="w-full px-4 py-2 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-          defaultValue="user"
           ref={idRef}
+          disabled={isPending}
         />
       </div>
       <div className="mb-6">
@@ -44,15 +44,18 @@ export default function LoginForm() {
           type="password"
           placeholder="비밀번호"
           className="w-full px-4 py-2 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-          defaultValue="pass"
           ref={passwordRef}
+          disabled={isPending}
         />
       </div>
       <button
         type="submit"
-        className="w-full px-4 py-2 bg-purple-600 rounded-md hover:bg-purple-700 transition-colors"
+        className={`w-full px-4 py-2 bg-purple-600 rounded-md transition-colors ${
+          isPending ? "opacity-50 cursor-not-allowed" : "hover:bg-purple-700"
+        }`}
+        disabled={isPending}
       >
-        로그인
+        {isPending ? "로그인 중..." : "로그인"}
       </button>
       {errorMessage && <p className="mt-4 text-red-500">{errorMessage}</p>}
     </form>

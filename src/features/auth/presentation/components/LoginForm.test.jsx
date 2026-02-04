@@ -84,4 +84,32 @@ describe("LoginForm UI Test", () => {
     expect(screen.getByPlaceholderText("아이디")).toBeDisabled();
     expect(screen.getByPlaceholderText("비밀번호")).toBeDisabled();
   });
+
+  it("에러 처리: 로그인 실패 시 에러 메시지를 표시해야 한다", async () => {
+    // 에러 발생 시나리오 모킹
+    const mockMutate = vi.fn((data, options) => {
+      // 강제로 onError 콜백 실행
+      options.onError("로그인 실패: 아이디 또는 비밀번호가 잘못되었습니다.");
+    });
+
+    useLogin.mockReturnValue({
+      mutate: mockMutate,
+      isPending: false,
+    });
+
+    const user = userEvent.setup();
+    render(<LoginForm />);
+
+    const idInput = screen.getByPlaceholderText("아이디");
+    const passwordInput = screen.getByPlaceholderText("비밀번호");
+    const submitButton = screen.getByRole("button", { name: "로그인" });
+
+    await user.type(idInput, "wronguser");
+    await user.type(passwordInput, "wrongpass");
+    await user.click(submitButton);
+
+    expect(
+      screen.getByText("로그인 실패: 아이디 또는 비밀번호가 잘못되었습니다."),
+    ).toBeInTheDocument();
+  });
 });

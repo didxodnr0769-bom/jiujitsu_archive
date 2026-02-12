@@ -5,16 +5,22 @@ import { Sidebar } from "./Sidebar";
 import useCategory from "@/features/category/presentation/hook/useCategory";
 import useAddCategory from "@/features/category/presentation/hook/useAddCategory";
 import useDeleteCategory from "@/features/category/presentation/hook/useDeleteCategory";
+import useUpdateCategory from "@/features/category/presentation/hook/useUpdateCategory";
 
 export function MainLayout({ children }) {
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
   const { categoryList } = useCategory();
   const { mutate: addCategory, isPending: isAddingCategory } = useAddCategory();
+  const { mutate: updateCategory, isPending: isUpdatingCategory } = useUpdateCategory();
   const { mutate: deleteCategory, isPending: isDeletingCategory } = useDeleteCategory();
 
   const handleAddCategory = (name) => {
     addCategory({ name });
+  };
+
+  const handleUpdateCategory = (categoryId, name) => {
+    updateCategory({ categoryId, categoryData: { name } });
   };
 
   const handleDeleteCategory = (categoryId) => {
@@ -41,8 +47,10 @@ export function MainLayout({ children }) {
         onClose={() => setCategoryModalOpen(false)}
         categories={categoryList}
         onAddCategory={handleAddCategory}
+        onUpdateCategory={handleUpdateCategory}
         onDeleteCategory={handleDeleteCategory}
         isAdding={isAddingCategory}
+        isUpdating={isUpdatingCategory}
         isDeleting={isDeletingCategory}
       />
     </div>

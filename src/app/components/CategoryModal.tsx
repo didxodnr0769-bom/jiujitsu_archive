@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Plus, Trash2 } from 'lucide-react';
 
 interface Category {
@@ -23,6 +23,18 @@ export function CategoryModal({
 }: CategoryModalProps) {
   const [newCategory, setNewCategory] = useState('');
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -35,9 +47,9 @@ export function CategoryModal({
 
   return (
     <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-      <div className="bg-[#1a1a1a] rounded-lg w-full max-w-md border border-gray-800">
+      <div className="bg-[#1a1a1a] rounded-lg w-full max-w-md border border-gray-800 max-h-[85vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-800">
+        <div className="flex items-center justify-between p-6 border-b border-gray-800 shrink-0">
           <h2 className="text-white text-xl font-semibold">카테고리 관리</h2>
           <button
             onClick={onClose}
@@ -48,7 +60,7 @@ export function CategoryModal({
         </div>
 
         {/* Content */}
-        <div className="p-6">
+        <div className="p-6 overflow-y-auto">
           {/* Add Category Form */}
           <form onSubmit={handleSubmit} className="mb-6">
             <label htmlFor="new-category" className="block text-gray-300 mb-2">

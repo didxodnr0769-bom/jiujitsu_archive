@@ -24,7 +24,27 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
       setType(editVideo.type);
       setNote(editVideo.note);
       setTitle(editVideo.title);
-      setCategory(editVideo.category);
+
+      // 카테고리 ID 찾기 로직 개선
+      let initialCategory = "";
+      if (editVideo.categoryId) {
+        initialCategory = editVideo.categoryId;
+      } else if (editVideo.category) {
+        // 1. 카테고리 이름으로 매칭 시도
+        const categoryByName = categoryList.find(
+          (c) => c.name === editVideo.category
+        );
+        if (categoryByName) {
+          initialCategory = categoryByName.categoryId;
+        } else {
+          // 2. 객체이거나 ID 값인 경우 처리
+          initialCategory =
+            typeof editVideo.category === "object"
+              ? editVideo.category.categoryId || editVideo.category.id
+              : editVideo.category;
+        }
+      }
+      setCategory(initialCategory);
     } else {
       setUrl("");
       setType("long");

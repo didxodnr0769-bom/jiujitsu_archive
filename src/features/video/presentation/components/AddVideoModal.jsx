@@ -10,6 +10,7 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
   const [note, setNote] = useState("");
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
+  const [error, setError] = useState("");
 
   const { categoryList, isPending, isError } = useCategory();
   const { mutate: addVideo } = useAddVideo();
@@ -27,8 +28,9 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
       setType("long");
       setNote("");
       setTitle("");
-      setCategory(categoryList[0] || "");
+      setCategory(""); // 카테고리 초기값 빈 문자열로 변경
     }
+    setError(""); // 모달 열리거나 모드 변경 시 에러 초기화
   }, [editVideo, categoryList, isOpen]);
 
   useEffect(() => {
@@ -42,7 +44,11 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!url || !category) return;
+    if (!url || !category) {
+      setError("URL과 카테고리를 모두 입력해주세요.");
+      return;
+    }
+    setError("");
 
     const videoData = {
       url,
@@ -63,7 +69,7 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
     setType("long");
     setNote("");
     setTitle("");
-    setCategory(categoryList[0] || "");
+    setCategory("");
     onClose();
   };
 
@@ -84,7 +90,7 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="p-6 space-y-4" noValidate>
           <div>
             <label htmlFor="video-url" className="block text-gray-300 mb-2">
               유튜브 URL
@@ -175,6 +181,8 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
               className="w-full px-4 py-3 bg-gray-900 text-white rounded-lg border border-gray-800 focus:border-purple-600 focus:outline-none resize-none"
             />
           </div>
+
+          {error && <p className="text-red-500 text-sm">{error}</p>}
 
           <button
             type="submit"

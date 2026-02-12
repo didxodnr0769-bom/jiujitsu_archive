@@ -1,11 +1,117 @@
+# BJJ Video Management System (Client)
 
-  # Jiu-Jitsu Video Archive
+이 프로젝트는 주짓수(BJJ) 비디오를 관리하고 분류하기 위한 클라이언트 애플리케이션입니다  
+**Clean Architecture** 원칙을 적용하여 유지보수성과 확장성을 고려해 설계되었습니다.
 
-  This is a code bundle for Jiu-Jitsu Video Archive. The original project is available at https://www.figma.com/design/5Q2NV9ggR55KER0bxGa8HF/Jiu-Jitsu-Video-Archive.
+## 📚 목차
 
-  ## Running the code
+- [소개](#소개)
+- [주요 기능](#주요-기능)
+- [기술 스택](#기술-스택)
+- [아키텍처](#아키텍처)
+- [시작하기](#시작하기)
+- [스크립트](#스크립트)
 
-  Run `npm i` to install the dependencies.
+## 🚀 소개
 
-  Run `npm run dev` to start the development server.
-  
+사용자가 주짓수 기술 영상을 카테고리별로 체계적으로 정리하고, 쉽게 찾아볼 수 있도록 돕는 웹 애플리케이션입니다. 기능 단위 모듈화와 계층형 아키텍처를 통해 비즈니스 로직과 UI 관심사를 분리했습니다.
+특정 Admin 사용자가 등록해놓은 Youtube 영상만 확인 할 수 있습니다.
+
+## ✨ 주요 기능
+
+- **인증 (Auth):** 사용자 로그인 및 세션 관리
+- **비디오 관리 (Video):** 비디오 추가, 수정, 삭제, 조회
+- **카테고리 관리 (Category):** 비디오 분류를 위한 카테고리 생성 및 관리
+
+## 🛠 기술 스택
+
+### Core
+
+- **Framework:** [React](https://react.dev/)
+- **Build Tool:** [Vite](https://vitejs.dev/)
+- **Language:** JavaScript
+
+### State Management & Data Fetching
+
+- **Client State:** Zustand
+- **Server State:** TanStack Query (React Query)
+
+### UI & Styling
+
+- **Design & Publishing :** Figma Make
+- **Styling:** Tailwind CSS v4
+
+### Utilities
+
+- **Routing:** [React Router DOM](https://reactrouter.com/)
+- **HTTP Client:** [Axios](https://axios-http.com/)
+
+### Testing
+
+- **Test Runner:** [Vitest](https://vitest.dev/)
+- **Testing Library:** [React Testing Library](https://testing-library.com/)
+
+## 🏗 아키텍처
+
+이 프로젝트는 **Feature-based Clean Architecture**를 따릅니다.
+상세한 내용은 `docs/md/ARCHITECTURE_GUIDE.md`를 참고하세요.
+
+### 폴더 구조
+
+```
+src/
+├── app/                  # 앱 전역 설정 (DI, Route, Global Components)
+├── features/             # 기능별 모듈 (핵심 폴더)
+│   ├── auth/             # 인증 기능
+│   ├── video/            # 비디오 기능
+│   └── category/         # 카테고리 기능
+├── shared/               # 공통 모듈
+└── pages/                # 라우팅 페이지
+```
+
+### 계층 (Layers)
+
+각 Feature는 내부적으로 다음 3가지 계층으로 나뉩니다.
+
+1.  **Domain:** 비즈니스 로직 (UseCase) 및 인터페이스 (Repository)
+2.  **Infrastructure:** 실제 데이터 통신 및 저장소 구현 (API, Store)
+3.  **Presentation:** UI 컴포넌트 및 Hook
+
+## 🏁 시작하기
+
+### 사전 요구사항
+
+- Node.js (LTS 버전 권장)
+- npm 또는 yarn, pnpm
+
+### 설치
+
+```bash
+# 의존성 설치
+npm install
+# 또는
+yarn install
+```
+
+### 환경 변수 설정
+
+프로젝트 루트에 `.env` 파일을 생성하고 `.env.example`의 내용을 참고하여 설정하세요.
+
+```env
+VITE_API_URL=http://localhost:3000 # 실제 API 주소로 변경
+```
+
+### 실행
+
+```bash
+# 개발 서버 실행
+npm run dev
+```
+
+브라우저에서 `http://localhost:5173` (포트는 변경될 수 있음)으로 접속하여 확인합니다.
+
+## 📜 스크립트
+
+- `npm run dev`: 개발 모드로 서버를 실행합니다.
+- `npm run build`: 프로덕션 배포를 위해 프로젝트를 빌드합니다.
+- `npm run test`: Vitest를 사용하여 테스트를 실행합니다.

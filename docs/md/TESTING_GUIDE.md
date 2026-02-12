@@ -28,6 +28,7 @@ npx vitest run --coverage
 이 프로젝트의 테스트를 위해 다음 패키지들이 설치되어 있습니다.
 
 ### 필수 패키지
+
 - **`vitest`**: 빠르고 현대적인 Unit/Integration 테스트 프레임워크 (Vite 기반).
 - **`@testing-library/react`**: React 컴포넌트를 사용자 관점에서 테스트하기 위한 라이브러리.
 - **`@testing-library/user-event`**: 클릭, 입력 등 실제 사용자 이벤트를 시뮬레이션하는 도구.
@@ -35,6 +36,7 @@ npx vitest run --coverage
 - **`jsdom`**: Node.js 환경에서 브라우저 DOM을 시뮬레이션.
 
 ### 커버리지 측정 패키지
+
 - **`@vitest/coverage-v8`**: V8 엔진 기반의 고성능 코드 커버리지 측정 도구.
 
 ---
@@ -42,6 +44,7 @@ npx vitest run --coverage
 ## 3. 코드 커버리지 (Code Coverage)
 
 ### 3.1 커버리지란?
+
 테스트 코드가 실제 소스 코드를 얼마나 실행하고 검증했는지를 나타내는 지표입니다.
 높은 커버리지는 버그 발생 가능성을 낮추고 리팩토링의 안정성을 보장합니다.
 
@@ -51,6 +54,7 @@ npx vitest run --coverage
 - **Lines (라인):** 소스 코드의 각 라인이 실행되었는지 여부.
 
 ### 3.2 커버리지 확인 방법
+
 터미널에서 다음 명령어를 실행하면 프로젝트 전체의 커버리지 리포트를 확인할 수 있습니다.
 
 ```bash
@@ -58,13 +62,14 @@ npx vitest run --coverage
 ```
 
 **출력 예시:**
+
 ```text
  % Coverage report from v8
 -----------------------|---------|----------|---------|---------|-------------------
-File                   | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+File                   | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
 -----------------------|---------|----------|---------|---------|-------------------
-All files              |   96.26 |    91.83 |    92.5 |   97.05 |                   
- features/auth/...     |     100 |      100 |     100 |     100 |                   
+All files              |   96.26 |    91.83 |    92.5 |   97.05 |
+ features/auth/...     |     100 |      100 |     100 |     100 |
  ...
 ```
 
@@ -121,7 +126,7 @@ import LoginForm from "./LoginForm";
 it("should display error message when login fails", async () => {
   const user = userEvent.setup();
   render(<LoginForm />);
-  
+
   // 사용자 입력 및 버튼 클릭 시뮬레이션
   await user.click(screen.getByRole("button", { name: "로그인" }));
 

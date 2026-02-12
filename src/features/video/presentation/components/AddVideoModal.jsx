@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
 import useCategory from "@/features/category/presentation/hook/useCategory";
 import useAddVideo from "../hook/useAddVideo";
 import useUpdateVideo from "../hook/useUpdateVideo";
@@ -13,8 +13,10 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
   const [error, setError] = useState("");
 
   const { categoryList, isPending, isError } = useCategory();
-  const { mutate: addVideo } = useAddVideo();
-  const { mutate: updateVideo } = useUpdateVideo();
+  const { mutate: addVideo, isPending: isAdding } = useAddVideo();
+  const { mutate: updateVideo, isPending: isUpdating } = useUpdateVideo();
+
+  const isSubmitting = isAdding || isUpdating;
 
   useEffect(() => {
     if (editVideo) {
@@ -59,18 +61,25 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
     };
 
     if (editVideo) {
-      updateVideo({ videoId: editVideo.id, videoData });
+      updateVideo(
+        { videoId: editVideo.id, videoData },
+        {
+          onSuccess: () => onClose(),
+        }
+      );
     } else {
-      addVideo(videoData);
+      addVideo(videoData, {
+        onSuccess: () => {
+          // Reset form and close
+          setUrl("");
+          setType("long");
+          setNote("");
+          setTitle("");
+          setCategory("");
+          onClose();
+        },
+      });
     }
-
-    // Reset form
-    setUrl("");
-    setType("long");
-    setNote("");
-    setTitle("");
-    setCategory("");
-    onClose();
   };
 
   return (
@@ -103,6 +112,7 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
               placeholder="https://youtube.com/watch?v=..."
               className="w-full px-4 py-3 bg-gray-900 text-white rounded-lg border border-gray-800 focus:border-purple-600 focus:outline-none"
               required
+              disabled={isSubmitting}
             />
           </div>
 
@@ -117,6 +127,7 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
                   checked={type === "long"}
                   onChange={(e) => setType(e.target.value)}
                   className="w-4 h-4 text-purple-600"
+                  disabled={isSubmitting}
                 />
                 <span className="text-white">일반 영상</span>
               </label>
@@ -128,6 +139,7 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
                   checked={type === "shorts"}
                   onChange={(e) => setType(e.target.value)}
                   className="w-4 h-4 text-purple-600"
+                  disabled={isSubmitting}
                 />
                 <span className="text-white">쇼츠</span>
               </label>
@@ -144,6 +156,7 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
               onChange={(e) => setCategory(parseInt(e.target.value))}
               className="w-full px-4 py-3 bg-gray-900 text-white rounded-lg border border-gray-800 focus:border-purple-600 focus:outline-none"
               required
+              disabled={isSubmitting}
             >
               <option value="">카테고리 선택</option>
               {categoryList.map((cat) => (
@@ -165,6 +178,7 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
               onChange={(e) => setTitle(e.target.value)}
               placeholder="비디오 제목"
               className="w-full px-4 py-3 bg-gray-900 text-white rounded-lg border border-gray-800 focus:border-purple-600 focus:outline-none"
+              disabled={isSubmitting}
             />
           </div>
 
@@ -179,6 +193,7 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
               placeholder="메모나 설명을 추가하세요..."
               rows={3}
               className="w-full px-4 py-3 bg-gray-900 text-white rounded-lg border border-gray-800 focus:border-purple-600 focus:outline-none resize-none"
+              disabled={isSubmitting}
             />
           </div>
 
@@ -186,9 +201,19 @@ export function AddVideoModal({ isOpen, onClose, editVideo }) {
 
           <button
             type="submit"
-            className="w-full py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold"
+            disabled={isSubmitting}
+            className="w-full py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            {editVideo ? "비디오 수정" : "비디오 저장"}
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                <span>처리 중...</span>
+              </>
+            ) : editVideo ? (
+              "비디오 수정"
+            ) : (
+              "비디오 저장"
+            )}
           </button>
         </form>
       </div>

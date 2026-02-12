@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 import useVideo from "@/features/video/presentation/hook/useVideo";
 import useAuthStore from "@/features/auth/infrastructure/store/useAuthStore";
 import { AddVideoModal } from "@/features/video/presentation/components/AddVideoModal";
-import useDeleteVideo from "@/features/video/presentation/hook/useDeleteVideo";
 
 function MainPage({ isAdmin, categories }) {
   const { categoryId: selectedCategory } = useParams();
@@ -15,7 +14,6 @@ function MainPage({ isAdmin, categories }) {
   const isAuthenticated = useAuthStore(
     (statusbar) => statusbar.isAuthenticated,
   );
-  const { mutate: deleteVideo } = useDeleteVideo();
 
   // Modal states
   const [addVideoModalOpen, setAddVideoModalOpen] = useState(false);
@@ -26,12 +24,6 @@ function MainPage({ isAdmin, categories }) {
   const handleEditVideo = (video) => {
     setEditingVideo(video);
     setAddVideoModalOpen(true);
-  };
-
-  const handleDeleteVideo = (videoId) => {
-    if (confirm("정말 삭제하시겠습니까?")) {
-      deleteVideo(videoId);
-    }
   };
 
   const handlePlayVideo = (video) => {
@@ -63,7 +55,6 @@ function MainPage({ isAdmin, categories }) {
           isAdmin={isAuthenticated}
           onPlay={handlePlayVideo}
           onEdit={handleEditVideo}
-          onDelete={handleDeleteVideo}
         />
       </div>
 

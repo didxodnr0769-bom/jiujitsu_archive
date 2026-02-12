@@ -1,6 +1,6 @@
 import { VideoCard } from "./VideoCard";
 
-export function VideoGrid({ videos, isAdmin, onPlay, onEdit, onDelete }) {
+export function VideoGrid({ videos, isAdmin, onPlay, onEdit }) {
   if (videos.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
@@ -25,7 +25,6 @@ export function VideoGrid({ videos, isAdmin, onPlay, onEdit, onDelete }) {
           isAdmin={isAdmin}
           onPlay={onPlay}
           onEdit={onEdit}
-          onDelete={onDelete}
         />
       ))}
     </div>

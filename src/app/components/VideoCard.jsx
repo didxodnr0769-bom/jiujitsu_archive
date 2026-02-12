@@ -1,4 +1,5 @@
-import { Edit2, Trash2 } from "lucide-react";
+import { Edit2, Trash2, Loader2 } from "lucide-react";
+import useDeleteVideo from "@/features/video/presentation/hook/useDeleteVideo";
 
 // Helper function to convert YouTube watch URL to embed URL
 const getYouTubeEmbedUrl = (url) => {
@@ -13,7 +14,16 @@ const getYouTubeEmbedUrl = (url) => {
   return "";
 };
 
-export function VideoCard({ video, isAdmin, onPlay, onEdit, onDelete }) {
+export function VideoCard({ video, isAdmin, onPlay, onEdit }) {
+  const { mutate: deleteVideo, isPending: isDeleting } = useDeleteVideo();
+
+  const handleDelete = (e) => {
+    e.stopPropagation();
+    if (confirm("정말 삭제하시겠습니까?")) {
+      deleteVideo(video.id);
+    }
+  };
+
   return (
     <div className="group relative bg-[#1a1a1a] rounded-lg overflow-hidden border border-gray-800 hover:border-purple-600 transition-all">
       {/* Embedded Video */}
@@ -68,14 +78,16 @@ export function VideoCard({ video, isAdmin, onPlay, onEdit, onDelete }) {
                 <Edit2 className="w-4 h-4" />
               </button>
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDelete(video.id);
-                }}
-                className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-gray-800 rounded-lg transition-colors"
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-gray-800 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 aria-label="비디오 삭제"
               >
-                <Trash2 className="w-4 h-4" />
+                {isDeleting ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Trash2 className="w-4 h-4" />
+                )}
               </button>
             </div>
           )}

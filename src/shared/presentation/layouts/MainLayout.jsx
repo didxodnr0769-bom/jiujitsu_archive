@@ -10,8 +10,8 @@ export function MainLayout({ children }) {
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
   const { categoryList } = useCategory();
-  const { mutate: addCategory } = useAddCategory();
-  const { mutate: deleteCategory } = useDeleteCategory();
+  const { mutate: addCategory, isPending: isAddingCategory } = useAddCategory();
+  const { mutate: deleteCategory, isPending: isDeletingCategory } = useDeleteCategory();
 
   const handleAddCategory = (name) => {
     addCategory({ name });
@@ -42,6 +42,8 @@ export function MainLayout({ children }) {
         categories={categoryList}
         onAddCategory={handleAddCategory}
         onDeleteCategory={handleDeleteCategory}
+        isAdding={isAddingCategory}
+        isDeleting={isDeletingCategory}
       />
     </div>
   );

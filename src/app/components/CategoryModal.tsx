@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Plus, Trash2 } from 'lucide-react';
+import { X, Plus, Trash2, Loader2 } from 'lucide-react';
 
 interface Category {
   categoryId: number;
@@ -12,6 +12,8 @@ interface CategoryModalProps {
   categories: Category[];
   onAddCategory: (name: string) => void;
   onDeleteCategory: (categoryId: number) => void;
+  isAdding?: boolean;
+  isDeleting?: boolean;
 }
 
 export function CategoryModal({
@@ -20,6 +22,8 @@ export function CategoryModal({
   categories,
   onAddCategory,
   onDeleteCategory,
+  isAdding = false,
+  isDeleting = false,
 }: CategoryModalProps) {
   const [newCategory, setNewCategory] = useState('');
 
@@ -74,12 +78,14 @@ export function CategoryModal({
                 onChange={(e) => setNewCategory(e.target.value)}
                 placeholder="카테고리 이름"
                 className="flex-1 px-4 py-3 bg-gray-900 text-white rounded-lg border border-gray-800 focus:border-purple-600 focus:outline-none"
+                disabled={isAdding}
               />
               <button
                 type="submit"
-                className="px-4 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                disabled={isAdding}
+                className="px-4 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[3.5rem]"
               >
-                <Plus className="w-5 h-5" />
+                {isAdding ? <Loader2 className="w-5 h-5 animate-spin" /> : <Plus className="w-5 h-5" />}
               </button>
             </div>
           </form>
@@ -99,7 +105,8 @@ export function CategoryModal({
                     <span className="text-white">{category.name}</span>
                     <button
                       onClick={() => onDeleteCategory(category.categoryId)}
-                      className="p-2 text-gray-400 hover:text-red-500 hover:bg-gray-800 rounded-lg transition-colors"
+                      disabled={isDeleting}
+                      className="p-2 text-gray-400 hover:text-red-500 hover:bg-gray-800 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       aria-label={`${category.name} 삭제`}
                     >
                       <Trash2 className="w-4 h-4" />
